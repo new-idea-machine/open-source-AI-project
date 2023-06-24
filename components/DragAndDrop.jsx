@@ -28,7 +28,7 @@ export default function DragAndDrop({ handleUpload }) {
   const handleClick = (index) => {
     setIsClicked(index);
   };
- 
+
   const handleFile = async (e) => {
     setMessage("");
     let file = e.target.files[0];
@@ -86,7 +86,6 @@ export default function DragAndDrop({ handleUpload }) {
                       <BsChatLeftDots />
                     </div>
                     <span className="truncate text-sm" title={data.filename}>
-                      {data.filename}
                       <Link href={`/${data._id}`}>{data.filename}</Link>
                     </span>
                   </div>

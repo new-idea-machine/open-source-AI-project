@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { IoSendSharp } from "react-icons/io5";
-import Sidebarmenu from "./components/Sidebar";
+import Sidebarmenu from "../components/Sidebar";
 import { useParams } from "next/navigation";
 
 export default function Home() {
@@ -130,7 +130,7 @@ export default function Home() {
       }
 
       //scroll to bottom
-      messageListRef.current?.scrollTo(0, messageListRef.current.scrollHeight);
+      // messageListRef.current?.scrollTo(0, messageListRef.current.scrollHeight);
     } catch (error) {
       setError("An error occurred while fetching the data. Please try again.");
       console.log("error", error);
