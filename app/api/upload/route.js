@@ -32,7 +32,7 @@ export async function POST(request) {
 
   const buffer = Buffer.from(await file.arrayBuffer());
 
-  const relativeUploadDir = `./app`;
+  const relativeUploadDir = `./`;
   const folderName = "docs";
   const fs = require("fs");
   const path = require("path");
