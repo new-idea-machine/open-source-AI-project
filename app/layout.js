@@ -1,4 +1,4 @@
-import Provider from "./components/Provider";
+import Provider from "../components/Provider";
 import "./globals.css";
 import { Montserrat } from "next/font/google";
 

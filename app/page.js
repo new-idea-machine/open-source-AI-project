@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { IoSendSharp } from "react-icons/io5";
-import Sidebarmenu from "./components/Sidebar";
+import Sidebarmenu from "../components/Sidebar";
 import { useParams } from "next/navigation";
 
 export default function Home() {
