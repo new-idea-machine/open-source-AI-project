@@ -13,6 +13,7 @@ import { Conversation } from "@/models/chat";
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
 import { getServerSession } from "next-auth/next";
+import { fs } from "fs";
 
 let newFileName;
 
@@ -31,9 +32,21 @@ export async function POST(request) {
 
   const buffer = Buffer.from(await file.arrayBuffer());
 
-  const relativeUploadDir = `/`;
-  const uploadDir = join(process.cwd(), "docs", relativeUploadDir);
+  const relativeUploadDir = `./app`;
+  const folderName = "docs";
+  const fs = require("fs");
+  const path = require("path");
 
+  const folderPath = path.join(relativeUploadDir, folderName);
+  const folderExists = fs.existsSync(folderPath) && fs.statSync(folderPath).isDirectory();
+  if (folderExists) {
+    console.log(`The folder '${folderName}' already exists.`);
+  } else {
+    const createFolder = fs.mkdirSync(path.join(relativeUploadDir, folderName));
+    console.log(`The folder '${folderName}' has been created.`, createFolder);
+  }
+
+  const uploadDir = join(process.cwd(), relativeUploadDir, folderName);
   try {
     const session = await getServerSession();
 
@@ -55,17 +68,17 @@ export async function POST(request) {
         const extension = newFileName.split(".").pop();
 
         let counter = 1;
-       
+
         do {
           newFileName = `${baseName}(${counter}).${extension}`;
           conversation = await Conversation.findOne({
             userId: sessionUser._id.toString(),
             filename: newFileName,
           });
-    
+
           counter += 1; // Increment counter
         } while (conversation); // Repeat until a unique filename is found
-    
+
         conversation = new Conversation({
           userId: sessionUser._id.toString(),
           filename: newFileName,
@@ -84,7 +97,6 @@ export async function POST(request) {
     const filename = newFileName;
     await writeFile(`${uploadDir}/${filename}`, buffer);
     const filePath = join(uploadDir, filename);
-
     /*load raw docs from the all files in the directory */
     const directoryLoader = new DirectoryLoader(uploadDir, {
       ".txt": (path) => new TextLoader(path),
