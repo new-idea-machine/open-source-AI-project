@@ -130,7 +130,7 @@ export default function Home() {
       }
 
       //scroll to bottom
-      messageListRef.current?.scrollTo(0, messageListRef.current.scrollHeight);
+      // messageListRef.current?.scrollTo(0, messageListRef.current.scrollHeight);
     } catch (error) {
       setError("An error occurred while fetching the data. Please try again.");
       console.log("error", error);
