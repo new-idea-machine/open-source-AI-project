@@ -94,3 +94,40 @@
 .dot:nth-child(3) {
   animation-delay: 1s;
 }
+
+.pdf-viewer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  pointer-events: auto;
+  flex: 1, 1, auto;
+}
+
+.pdf-viewer__toolbar {
+  display: flex;
+  width: 38.1%;
+  font-family: system-ui, Roboto, sans-serif;
+  align-items: center;
+  padding: 0 8px;
+  height: 42px;
+  background-color: #ac9191;
+  border-bottom: 1px solid #e0e0e0;
+  flex-shrink: 0;
+}
+
+.pdf-viewer__content {
+  flex: 1 1 auto;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  background-color: #fff;
+}
+
+.chat-toolbar {
+  display: flex;
+  padding: 0 6px;
+  height: 42px;
+  align-items: center;
+  flex-shrink: 0;
+}

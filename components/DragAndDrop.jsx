@@ -79,8 +79,7 @@ export default function DragAndDrop({ handleUpload }) {
                       ? "bg-gray-200 bg-opacity-100"
                       : "hover:bg-gray-100 hover:bg-opacity-50 bg-none"
                   }`}
-                  onClick={() => handleClick(data._id)}
-                >
+                  onClick={() => handleClick(data._id)}>
                   <div className="flex flex-row items-center gap-2 w-[100%]">
                     <div>
                       <BsChatLeftDots />
