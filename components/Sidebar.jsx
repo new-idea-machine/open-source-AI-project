@@ -18,7 +18,7 @@ const Sidebarmenu = ({ handleUpload }) => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-teal-300 to-transparent w-1/6 h-screen flex flex-col justify-between fixed top-0 transition duration-350 z-10">
+    <div className="bg-gradient-to-r from-teal-300 to-transparent w-[18%] h-screen flex flex-col justify-between overflow-auto top-0 transition duration-350 z-10">
       <div className="w-[100%]">
         <div>
           <DragAndDrop handleUpload={handleUpload} />
@@ -33,8 +33,7 @@ const Sidebarmenu = ({ handleUpload }) => {
           <button
             type="button"
             onClick={signOut}
-            className="border-solid border-2 border-gray-200 rounded p-2 pr-4 m-4"
-          >
+            className="border-solid border-2 border-gray-200 rounded p-2 pr-4 m-4">
             Sign Out
           </button>
         </div>
@@ -46,8 +45,7 @@ const Sidebarmenu = ({ handleUpload }) => {
                 type="button"
                 key={provider.name}
                 onClick={() => signIn(provider.id)}
-                className="border-solid border-2 border-gray-200 rounded p-2 m-4"
-              >
+                className="border-solid border-2 border-gray-200 rounded p-2 m-4">
                 Sign In
               </button>
             ))}
