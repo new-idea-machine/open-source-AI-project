@@ -113,7 +113,7 @@ export default function DragAndDrop({ handleUpload }) {
                       <BsChatLeftDots />
                     </div>
                     <span className="truncate text-sm" title={data.filename}>
-                      {/* <Link href={`/api/conversations/${data._id}`}>{data.filename}</Link> */}
+                      <div href={`/api/conversations/${data._id}`}>{data.filename}</div>
                     </span>
                   </div>
                 </div>
