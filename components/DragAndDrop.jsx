@@ -25,7 +25,34 @@ export default function DragAndDrop({ handleUpload }) {
     fetchUserFiles();
   }, [session]);
 
-  const handleClick = (index) => {
+  const fetchConversations = async (index, filename) => {
+    const data = {
+      id: index,
+      filename: filename,
+    };
+
+    try {
+      const response = await fetch("/api/conversations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      if (response.ok) {
+        const result = await response.json();
+        // Handle the response from the backend
+        console.log(result);
+      } else {
+        throw new Error("Failed to fetch conversation");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  const handleClick = (index, filename) => {
+    fetchConversations(index, filename);
     setIsClicked(index);
   };
 
@@ -79,14 +106,14 @@ export default function DragAndDrop({ handleUpload }) {
                       ? "bg-gray-200 bg-opacity-100"
                       : "hover:bg-gray-100 hover:bg-opacity-50 bg-none"
                   }`}
-                  onClick={() => handleClick(data._id)}
+                  onClick={() => handleClick(data._id, data.filename)}
                 >
                   <div className="flex flex-row items-center gap-2 w-[100%]">
                     <div>
                       <BsChatLeftDots />
                     </div>
                     <span className="truncate text-sm" title={data.filename}>
-                      <Link href={`/${data._id}`}>{data.filename}</Link>
+                      {/* <Link href={`/api/conversations/${data._id}`}>{data.filename}</Link> */}
                     </span>
                   </div>
                 </div>
