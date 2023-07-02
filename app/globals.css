@@ -11,6 +11,10 @@
   @apply relative z-10;
 }
 
+body, main {
+  min-height: 100vh;
+}
+
 .main {
   width: 100vw;
   min-height: 100vh;
@@ -121,7 +125,6 @@
   overflow: hidden;
   height: 100%;
   width: 100%;
-  background-color: #fff;
 }
 
 .chat-toolbar {
@@ -129,5 +132,5 @@
   padding: 0 6px;
   height: 42px;
   align-items: center;
-  flex-shrink: 0;
+  flex-shrink: 1;
 }
