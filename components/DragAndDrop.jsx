@@ -42,7 +42,7 @@ export default function DragAndDrop({ handleUpload }) {
   return (
     <>
       <div className="flex justify-center items-center">
-        <div className="w-full p-2 mr-4 rounded-md">
+        <div className="w-full p-2 m-2 backdrop:rounded-md">
           <span className="flex justify-center items-center bg-white text-[12px] text-red-500">
             {message}
           </span>
@@ -51,7 +51,7 @@ export default function DragAndDrop({ handleUpload }) {
               <input
                 type="file"
                 onChange={(e) => handleFile(e)}
-                className="h-full w-full opacity-0 z-10 absolute"
+                className="h-full w-full opacity-0 z-10 absolute cursor-pointer"
                 name="file"
               />
             </form>

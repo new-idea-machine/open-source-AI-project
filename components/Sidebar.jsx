@@ -18,12 +18,11 @@ const Sidebarmenu = ({ handleUpload }) => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-teal-300 to-transparent w-[18%] h-screen flex flex-col justify-between overflow-auto top-0 transition duration-350 z-10">
-      <div className="w-[100%]">
-        <div>
-          <DragAndDrop handleUpload={handleUpload} />
-        </div>
+    <div className="bg-gradient-to-r from-teal-300 to-transparent w-[18%] flex flex-col justify-between overflow-auto top-0 transition duration-350 z-10">
+      <div>
+        <DragAndDrop handleUpload={handleUpload} />
       </div>
+
       {session?.user ? (
         <div className="flex flex-col">
           <div className="flex flex-row items-center gap-2 justify-center pr-4">
