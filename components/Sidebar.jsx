@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import DragAndDrop from "./DragAndDrop";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 import { CiUser } from "react-icons/ci";
+import UserSettingModal from "./UserSettingModal";
 
 const Sidebarmenu = ({ handleUpload }) => {
   const { data: session } = useSession();
@@ -28,6 +29,7 @@ const Sidebarmenu = ({ handleUpload }) => {
           <div className="flex flex-row items-center gap-2 justify-center pr-4">
             <CiUser />
             <p>{session.user.name}</p>
+            <UserSettingModal />
           </div>
           <button
             type="button"
