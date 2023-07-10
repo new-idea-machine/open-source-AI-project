@@ -4,7 +4,7 @@ import { Conversation } from "@/models/chat";
 import { getServerSession } from "next-auth/next";
 import User from "@/models/user";
 
-export async function GET(req, context) {
+export async function POST(req, context) {
   console.log("context", context.params)
   const session = await getServerSession();
 
