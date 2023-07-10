@@ -3,7 +3,7 @@
 function Filedisplay() {
   return (
     <div className="flex w-[39%]">
-      <div className="bg-[#ded8d8] w-1 h-full"></div>
+      <div className="bg-[#ded8d8] w-1 h-screen"></div>
       <div className="pdf-viewer bg-gradient-to-r from-teal-50 to-transparent">
         <div className="pdf-viewer__toolbar">
           <h1 className="text-lg mr-auto text-ellipsis whitespace-nowrap pl-1.5">

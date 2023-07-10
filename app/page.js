@@ -199,7 +199,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="w-full bottom-0">
+          <div className="w-full">
             <form
               className="flex flex-row items-center w-[95%] p-10 pr-0 mt-auto"
               onSubmit={sendQuery}>
