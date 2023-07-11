@@ -38,7 +38,8 @@ export async function POST(request) {
   const path = require("path");
 
   const folderPath = path.join(relativeUploadDir, folderName);
-  const folderExists = fs.existsSync(folderPath) && fs.statSync(folderPath).isDirectory();
+  const folderExists =
+    fs.existsSync(folderPath) && fs.statSync(folderPath).isDirectory();
   if (folderExists) {
     console.log(`The folder '${folderName}' already exists.`);
   } else {
@@ -47,6 +48,19 @@ export async function POST(request) {
   }
 
   const uploadDir = join(process.cwd(), relativeUploadDir, folderName);
+  const filename = newFileName;
+  await writeFile(`${uploadDir}/${filename}`, buffer);
+  const filePath = join(uploadDir, filename);
+  /*load raw docs from the all files in the directory */
+  const directoryLoader = new DirectoryLoader(uploadDir, {
+    ".txt": (path) => new TextLoader(path),
+    ".pdf": (path) => new PDFLoader(path),
+  });
+
+  // const loader = new PDFLoader(filePath);
+  const rawDocs = await directoryLoader.load();
+  console.log(rawDocs);
+
   try {
     const session = await getServerSession();
 
@@ -79,33 +93,22 @@ export async function POST(request) {
           counter += 1; // Increment counter
         } while (conversation); // Repeat until a unique filename is found
 
-        conversation = new Conversation({
+          conversation = new Conversation({
           userId: sessionUser._id.toString(),
           filename: newFileName,
           chat: [],
+          file: rawDocs[0].pageContent,
         });
       } else {
         conversation = new Conversation({
           userId: sessionUser._id.toString(),
           filename: newFileName,
           chat: [],
+          file: rawDocs[0].pageContent,
         });
       }
       await conversation.save();
     }
-
-    const filename = newFileName;
-    await writeFile(`${uploadDir}/${filename}`, buffer);
-    const filePath = join(uploadDir, filename);
-    /*load raw docs from the all files in the directory */
-    const directoryLoader = new DirectoryLoader(uploadDir, {
-      ".txt": (path) => new TextLoader(path),
-      ".pdf": (path) => new PDFLoader(path),
-    });
-
-    // const loader = new PDFLoader(filePath);
-    const rawDocs = await directoryLoader.load();
-    console.log(rawDocs);
 
     /* Split text into chunks */
     const textSplitter = new RecursiveCharacterTextSplitter({
