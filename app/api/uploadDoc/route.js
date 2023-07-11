@@ -6,29 +6,17 @@ import { pinecone } from "@/utils/pinecone-client";
 import { PINECONE_INDEX_NAME } from "@/config/pinecone";
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
+import { Conversation } from "@/models/chat";
 import { getServerSession } from "next-auth/next";
 
 export async function POST(req) {
   const { file,docName } = await req.json();
+  console.log("file, docname", file, docName)
 
-  const sanitizedText = file.data?.trim().replace("\n", " ");
+  const sanitizedText = file?.trim().replace("\n", " ");
   console.log("sanitized Text", sanitizedText);
   try {
-    const index = pinecone.Index(PINECONE_INDEX_NAME);
 
-    /* create vectorstore*/
-    const vectorStore = await PineconeStore.fromExistingIndex(
-      new OpenAIEmbeddings({}),
-      {
-        pineconeIndex: index,
-        textKey: "text",
-        namespace: docName,
-      }
-    );
-    //create chain
-    const chain = makeChain(vectorStore);
-    
-    
     const session = await getServerSession();
     console.log("Session ", session)
 
@@ -39,28 +27,35 @@ export async function POST(req) {
       session.user.id = sessionUser._id.toString();
 
       // Try to find an existing document with the same filename
-      let document = await Document.findOne({
-        title: title,
-        uploadedBy: sessionUser._id.toString(),
+      let conversation = await Conversation.findOne({
+        userId: sessionUser._id.toString(),
+        filename: docName,
       });
-
-      if (!document) {
-        // If the document doesn't exist, create a new one
-        document = new Document({
-          title: title,
-          uploadedBy: sessionUser._id.toString(),
-        });
+ 
+      if (!conversation) {
+        // If the conversation doesn't exist, create a new one
+        conversation = new Conversation({
+          userId: sessionUser._id.toString(),
+          filename: docName,
+          chat: [],
+          document: {
+            title: docName,
+            file: sanitizedText,
+          },
+        })
       }
 
       // Push new data into the document's file array
-      document.file.push({ data: sanitizedText, message: sanitizedText });
+      conversation.document.push({ title:docName, file: sanitizedText });
+      console.log("conversation ", conversation)
+      await conversation.save();
 
-      await document.save();
-
-      return NextResponse.json(response);
+      return NextResponse.json(conversation);
+    
     } catch (error) {
-      return NextResponse.json("Failed to create new document", error);
+      return NextResponse.json( "Failed to create new document",error);
     }
+   
   } catch (error) {
     console.log("error", error);
     return NextResponse.json({

@@ -1,21 +1,36 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+
+const DocumentSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+  },
+  file: {
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
 
 const MessageSchema = new mongoose.Schema({
-  sender: { 
-    type: String, 
+  sender: {
+    type: String,
     required: true,
-    enum: ['ai', 'human'] // The sender must be either 'ai' or 'human'
+    enum: ["ai", "human"], // The sender must be either 'ai' or 'human'
   },
   message: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 const ConversationSchema = new mongoose.Schema({
-  userId: { 
-    type: mongoose.Schema.Types.ObjectId,  
-    ref: "User"
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
   },
   filename: {
     type: String,
@@ -25,8 +40,14 @@ const ConversationSchema = new mongoose.Schema({
     type: [MessageSchema], // The chat is an array of MessageSchema
     required: true,
   },
+  document: {
+    type:[DocumentSchema],
+    required:true
+  }
 });
+
+
 
 export const Conversation =
   mongoose.models.Conversation ||
-  mongoose.model('Conversation', ConversationSchema);
+  mongoose.model("Conversation", ConversationSchema);
