@@ -1,20 +1,5 @@
 import mongoose from "mongoose";
 
-const DocumentSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  file: {
-    type: String,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
-
 const MessageSchema = new mongoose.Schema({
   sender: {
     type: String,
@@ -40,8 +25,8 @@ const ConversationSchema = new mongoose.Schema({
     type: [MessageSchema], // The chat is an array of MessageSchema
     required: true,
   },
-  document: {
-    type:[DocumentSchema],
+  file: {
+    type: String,
     required:true
   }
 });
