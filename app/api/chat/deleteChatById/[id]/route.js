@@ -6,18 +6,17 @@ export async function DELETE(req, context) {
   try {
     await connectToDB();
     let id = context.params.id;
-    let deletedChat;
-    
+        
       // find conversation with given ID
       const conversation = await Conversation.findOne({
         _id: id,
       });
-      console.log(conversation)
+      // console.log(conversation)
       if(conversation.chat.length == 0){
         console.log("Chat is empty");
       } 
       else {
-        deletedChat = conversation.chat.splice(0,conversation.chat.length);
+        const deletedChat = conversation.chat.splice(0,conversation.chat.length);
         await conversation.save();
         return NextResponse.json("Message deleted successfully");
       }
