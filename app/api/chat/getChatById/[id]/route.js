@@ -15,7 +15,7 @@ export async function GET(req, context) {
     let conversation = await Conversation.findById({ _id: id });
 
     //  console.log("conversation", conversation)
-    return NextResponse.json(conversation);
+    return NextResponse.json(conversation.chat);
   } catch (e) {
     console.error(e);
     return NextResponse.json("Error fetching conversations");
