@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { Conversation } from "@/models/chat";
 import { getServerSession } from "next-auth";
 
-export async function POST(req) {
+export async function POST(req, res) {
   const { id, filename } = await req.json();
   // console.log(" export chat ", id, filename);
   // const session = await getServerSession();
@@ -15,10 +15,10 @@ export async function POST(req) {
         _id: id,
         filename: filename,
       });
-      // Check if the conversation exists
       if (!conversation) {
         return NextResponse.json("Conversation not found");
       }
+
       // Filter chat messages for "human" and "ai" senders
       const filteredChat = conversation.chat.filter(
         (message) =>
@@ -32,7 +32,6 @@ export async function POST(req) {
       });
 
       // console.log(" file ", textContent);
-
       return NextResponse.json(textContent);
     } catch (error) {
       return NextResponse.json("Error exporting the chat");
