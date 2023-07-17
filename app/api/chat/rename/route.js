@@ -11,7 +11,7 @@ export async function PUT(req) {
   try {
     await connectToDB();
     let conversation = await Conversation.findByIdAndUpdate(
-      id,
+      {_id : id},
       {filename : updatedFilename}
     );
     await conversation.save();
