@@ -59,6 +59,11 @@ export default function UserSettingModal() {
                 aria-labelledby="demo-radio-buttons-group-label"
                 defaultValue="funny"
                 name="radio-buttons-group">
+                  <FormControlLabel
+                  value="default"
+                  control={<Radio />}
+                  label="Default"
+                />
                 <FormControlLabel
                   value="funny"
                   control={<Radio />}
