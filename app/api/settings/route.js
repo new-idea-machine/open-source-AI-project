@@ -1,81 +1,60 @@
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { HumanChatMessage, SystemChatMessage } from "langchain/schema";
-import { SystemMessagePromptTemplate, HumanMessagePromptTemplate, ChatPromptTemplate } from "langchain/prompts";
+import {
+  SystemMessagePromptTemplate,
+  HumanMessagePromptTemplate,
+  ChatPromptTemplate,
+} from "langchain/prompts";
 import { NextResponse } from "next/server";
 import { LLMChain } from "langchain/chains";
 
 export async function POST(req) {
-  const { question ,chatStyle } = await req.json();
-    // console.log("question ",question, chatStyle);
-  const chat = new ChatOpenAI({temperature: 0});
+  const { question, chatStyle } = await req.json();
+  // console.log("question ",question, chatStyle);
+  const chat = new ChatOpenAI({ temperature: 0.9 });
   let resChatStyle = "";
+  //   let serious = "You are a serious "
 
-  switch (chatStyle) {
-    case "funny":
+  let prompt;
 
-    const res =  ChatPromptTemplate.fromPromptMessages([
-        SystemMessagePromptTemplate.fromTemplate("You are a funny and helpful assistant that answers {question} in a funny manner ")
-    ],
-    HumanMessagePromptTemplate.fromTemplate("{text}"))
-
-    const chain = new LLMChain({
-        prompt: res,
-        llm : chat
-    })
-
-     resChatStyle = await chain.call({
-        question : question,
-        text : question
-    })
-
-      //   console.log("This is funny");
-    //   resChatStyle = await chat.call([
-    //     new SystemChatMessage(
-    //       "You are a funny and helpful chatbot that responds to {question} in a funny manner. "
-    //     ),
-    //     new HumanChatMessage("{question}"),
-    //   ]);
-
-      return NextResponse.json(resChatStyle);
-    //   break;
-
-    case "sarcastic":
-      //   console.log("This is sarcastic");
-      resChatStyle = await chat.call([
-        new SystemChatMessage(
-          "You are a sarcastic and helpful chatbot that responds to {question} in a sarcastic manner . "
-        ),
-        // new HumanChatMessage("{question}"),
-      ]);
-
-      return NextResponse.json(resChatStyle);
-      break;
-
-    case "serious":
-      //   console.log("This is serious");
-      resChatStyle = await chat.call([
-        new SystemChatMessage(
-          "You are a serious and helpful chatbot that replies in a serious manner to the all the questions asked to you. "
-        ),
-        new HumanChatMessage("{question}"),
-      ]);
-
-      return NextResponse.json(resChatStyle);
-      break;
-
-    case "angry":
-      //   console.log("This is angry");
-      resChatStyle = await chat.call([
-        new SystemChatMessage(
-          "You are a serious and helpful chatbot that replies in a serious manner to the all the questions asked to you. "
-        ),
-        new HumanChatMessage("{question}"),
-      ]);
-
-      return NextResponse.json(resChatStyle);
-      break;
-
-    default:
-      console.log("default case");
+  if (chatStyle === "angry") {
+    let angryPreprompt =
+      "You are an extremely angry assistant and you curse and you are extremely impatient.\n";
+    prompt = angryPreprompt + "answer the following: {question}";
+  } else if (chatStyle === "sarcastic") {
+    let sarcasticPrePrompt =
+      "You are extremely annoyed, disinterested, mocks, ridicules. You say the opposite of what you mean (verbal irony) and doing it in a particularly hostile tone.\n";
+    prompt = sarcasticPrePrompt + "answer the following: {question}";
+  } else if (chatStyle === "funny") {
+    let funnyPrePrompt =
+      "You are an outgoing, emotionally stable, conscientious, open-minded, and agreeable assistant.\n";
+    prompt = funnyPrePrompt + "answer the following: {question}";
+  } else if (chatStyle === "serious") {
+    let seriousPrePrompt =
+      "You are a serious assistent who is quiet, thinks carefully about things, and does not have fun conversations a lot.\n";
+    prompt = seriousPrePrompt + "answer the following: {question}";
+  } else {
+    let defaultPrePrompt = "You are a chat assistant who answers questions.\n";
+    prompt = defaultPrePrompt + "answer the following: {question}";
   }
+
+  console.log("this is :", chatStyle, "style");
+  const res = ChatPromptTemplate.fromPromptMessages(
+    [SystemMessagePromptTemplate.fromTemplate(prompt)],
+    HumanMessagePromptTemplate.fromTemplate("{text}")
+  );
+
+  const chain = new LLMChain({
+    prompt: res,
+    llm: chat,
+  });
+
+  resChatStyle = await chain.call({
+    question: question,
+    text: question,
+    chatStyle: chatStyle,
+  });
+
+  console.log(resChatStyle);
+  return NextResponse.json(resChatStyle);
 }
