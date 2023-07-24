@@ -1,11 +1,6 @@
 function ChatToolBar() {
   return (
     <div className="chat-toolbar">
-      {/* <div className="dropdown">
-        <button className="link">Chat Styles</button>
-        <div className="dropdown-menu">Dropdown Content</div>
-      </div> */}
-
       <div className="ml-auto mr-2 text-2xl flex gap-x-1 whitespace-nowrap">
         <button className="pt-0.5" title="Share Chat">
           <svg
