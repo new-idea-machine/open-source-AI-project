@@ -27,6 +27,7 @@ export default function DragAndDrop({ handleUpload }) {
 
   const handleClick = (index) => {
     setIsClicked(index);
+    console.log(index);
   };
 
   const handleFile = async (e) => {

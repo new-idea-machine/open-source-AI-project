@@ -1,6 +1,6 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
-import { Button, IconButton } from "@mui/material";
+import { Button, IconButton, createTheme } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -10,6 +10,15 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Tooltip from "@mui/material/Tooltip";
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#979dc1",
+    },
+    secondary: { main: "#c9949e" },
+  },
+});
 
 const style = {
   position: "absolute",
@@ -36,13 +45,13 @@ export default function UserSettingModal() {
           <SettingsIcon />
         </IconButton>
       </Tooltip>
-      <Modal hideBackdrop open={open} onClose={handleClose}>
+      <Modal hideBackdrop open={open} onClose={handleClose} theme={theme}>
         <Box sx={style}>
           <Typography variant="h5">Chat Styles</Typography>
           <Typography sx={{ mt: 2 }}>
             This is a list of styles that you can use to customize your chat.
           </Typography>
-          <Box sx={{ mt: 2, bgcolor: "success.light", borderRadius: "10px" }}>
+          <Box sx={{ mt: 2, bgcolor: "secondary.light", borderRadius: "10px" }}>
             <FormControl sx={{ ml: 2 }}>
               <FormLabel
                 id="demo-radio-buttons-group-label"
