@@ -8,10 +8,14 @@ import { Conversation } from "@/models/chat";
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
 import { getServerSession } from "next-auth/next";
+import { ChatOpenAI } from "langchain/chat_models/openai";
+import { LLMChain } from "langchain/chains";
+import { SystemMessagePromptTemplate, HumanMessagePromptTemplate, ChatPromptTemplate } from "langchain/prompts";
+
 
 export async function POST(req) {
-  const { question, history, docName } = await req.json();
-
+  const { question, history, docName   } = await req.json();
+  let chatStyle = "funny"
   // OpenAI recommends replacing newlines with spaces for best results
   const sanitizedQuestion = question?.trim().replace("\n", " ");
   console.log("sanitizedQuestion", sanitizedQuestion);
@@ -31,11 +35,29 @@ export async function POST(req) {
 
     //create chain
     const chain = makeChain(vectorStore);
+    console.log("this is :" , chatStyle , "style")
+
+    const chat = new ChatOpenAI({temperature: 0});
+    let resChatStyle = "";
+
+    const res =  ChatPromptTemplate.fromPromptMessages([
+      SystemMessagePromptTemplate.fromTemplate("You are a {chatStyle} and helpful assistant that answers {question} in a funny manner ")
+    ],
+    HumanMessagePromptTemplate.fromTemplate("{text}"))
+
+  const llmChain = new LLMChain({
+      prompt: res,
+      llm : chat
+  })
 
     //Ask a question using chat history
-    const response = await chain.call({
-      question: sanitizedQuestion,
+    const response = await llmChain.call({ text : {
+
       chat_history: history,
+    },
+    question: sanitizedQuestion,
+    chatStyle:chatStyle
+
     });
   
     const session = await getServerSession();
