@@ -11,11 +11,12 @@ import { getServerSession } from "next-auth/next";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { LLMChain } from "langchain/chains";
 import { SystemMessagePromptTemplate, HumanMessagePromptTemplate, ChatPromptTemplate } from "langchain/prompts";
+import {prompt} from "../settings"
 
 
 export async function POST(req) {
   const { question, history, docName   } = await req.json();
-  let chatStyle = "funny"
+  // let chatStyle = "funny"
   // OpenAI recommends replacing newlines with spaces for best results
   const sanitizedQuestion = question?.trim().replace("\n", " ");
   console.log("sanitizedQuestion", sanitizedQuestion);
@@ -37,27 +38,24 @@ export async function POST(req) {
     const chain = makeChain(vectorStore);
     console.log("this is :" , chatStyle , "style")
 
-    const chat = new ChatOpenAI({temperature: 0});
-    let resChatStyle = "";
+  //   const chat = new ChatOpenAI({temperature: 0});
+  //   let resChatStyle = "";
 
-    const res =  ChatPromptTemplate.fromPromptMessages([
-      SystemMessagePromptTemplate.fromTemplate("You are a {chatStyle} and helpful assistant that answers {question} in a funny manner ")
-    ],
-    HumanMessagePromptTemplate.fromTemplate("{text}"))
+  //   const res =  ChatPromptTemplate.fromPromptMessages([
+  //     SystemMessagePromptTemplate.fromTemplate("You are a {chatStyle} and helpful assistant that answers {question} in a funny manner ")
+  //   ],
+  //   HumanMessagePromptTemplate.fromTemplate("{text}"))
 
-  const llmChain = new LLMChain({
-      prompt: res,
-      llm : chat
-  })
+  // const llmChain = new LLMChain({
+  //     prompt: res,
+  //     llm : chat
+  // })
 
     //Ask a question using chat history
-    const response = await llmChain.call({ text : {
-
+    const response = await chain.call({ 
       chat_history: history,
-    },
-    question: sanitizedQuestion,
-    chatStyle:chatStyle
-
+      question: sanitizedQuestion,
+      chatStyle:prompt
     });
   
     const session = await getServerSession();
