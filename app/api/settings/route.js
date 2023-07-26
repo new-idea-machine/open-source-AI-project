@@ -11,7 +11,7 @@ import { LLMChain } from "langchain/chains";
 export async function POST(req) {
   const { question, chatStyle } = await req.json();
   // console.log("question ",question, chatStyle);
-  const chat = new ChatOpenAI({ temperature: 0.9 });
+  const chat = new ChatOpenAI({ temperature: 0.4 });
   let resChatStyle = "";
   //   let serious = "You are a serious "
 
@@ -55,6 +55,6 @@ export async function POST(req) {
     chatStyle: chatStyle,
   });
 
-  console.log(resChatStyle);
-  return NextResponse.json(resChatStyle);
+//   console.log(resChatStyle);
+  return NextResponse.json(prompt);
 }
